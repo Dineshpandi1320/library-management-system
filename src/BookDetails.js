@@ -1,26 +1,48 @@
-import React from "react";
-import Card from "@mui/material/Card";
-import CardHeader from "@mui/material/CardHeader";
-import CardContent from "@mui/material/CardContent";
-import CardActions from "@mui/material/CardActions";
+import { useNavigate, useParams } from "react-router-dom";
+import Card from '@mui/material/Card';
+import Button from '@mui/material/Button';
+import ArrowBackIcon from '@mui/icons-material/ArrowBack';
+import {useEffect} from "react";
+import {useState} from "react";
 
-export const BookDetails = ({ data, editIcon, deleteIcon }) => {
+
+export function BookDetails() {
+  const navigate=useNavigate()
+  const { id } = useParams();
+  //const data = obj[id];
+  const [Book, setBook] = useState({});
+  
+ 
+  const getbook=()=>{
+    fetch(`https://63fc0e146deb8bdb814d8ed9.mockapi.io/book/${id}`)
+    .then((data)=>data.json())
+    .then((use)=>setBook(use))
+   }
+  useEffect(()=>getbook())
+  
+  
   return (
     <div>
-      <Card className="book-details">
-        <CardHeader id="card-header" title={data.title} />
-        <CardContent id="card-content">
-          <p>Author : {data.author}</p>
-          <p>ISBN : {data.ISBN}</p>
-          <p>publicationDate : {data.publicationDate}</p>
-          <p>edition : {data.edition}</p>
-          <p>publisher : {data.publisher}</p>
-          <p>genre : {data.genre}</p>
-        </CardContent>
-        <CardActions className="edit-delete">
-          {editIcon} {deleteIcon}
-        </CardActions>
-      </Card>
+      <Card className="fl">
+      
+    <div className="detail">
+   
+      <p>{Book.name}</p>
+      <p>BY : {Book.author}</p>
+      <p>Rate : 💲{Book.rate}</p></div>
+      <div>
+        <h2>About The Book</h2>
+      <p>{Book.discription}</p>
+      <div  className="sp">
+      <p>rating: </p>
+      <p>{Book.rating}</p>
+      </div>
+      <div   className="sp">
+      <p>Available Books : </p>
+      <p>{Book.available}</p>
+      </div>
+     </div></Card>
+     <Button startIcon={<ArrowBackIcon />} color="primary" variant="contained" onClick={()=>navigate(-1)}>back</Button>
     </div>
   );
-};
+}

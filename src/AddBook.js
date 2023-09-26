@@ -1,134 +1,137 @@
-import { Button } from "@mui/material";
-import TextField from "@mui/material/TextField";
-import { useFormik } from "formik";
+import {useFormik } from "formik";
+import TextField from '@mui/material/TextField';
+import Button from '@mui/material/Button';
 import * as yup from "yup";
 import { useNavigate } from "react-router-dom";
+export function AddBook() {
+  const navigate=useNavigate()
+  const formValidationSchema=yup.object({
+    image:yup.string().required().url(),
+    name:yup.string().required(),
+    author:yup.string().required(),
+    rate:yup.string().required(),
+    rating:yup.string().required(),
+    discription:yup.string().required().min(50),
+    available:yup.string().required(),
+  })
+  const {handleBlur,handleChange,handleSubmit,touched,errors,values}=useFormik({
+initialValues:{
+image:"",
+name:"",
+author:"",
+rate:"",
+rating:"",
+discription:"",
+available:""
 
-const formValidationSchema = yup.object({
-  title: yup.string().required(),
-  author: yup.string().required(),
-  ISBN: yup
-    .string()
-    .required()
-    .matches(/^[0-9]{3}-[0-9]{10}$/, "Invalid ISBN format"),
-  publicationDate: yup.date().required("MM/DD/YYYY"),
-  edition: yup.string().required(),
-  publisher: yup.string().required(),
-  genre: yup.string().required(),
-});
-
-export const AddBook = () => {
-  const navigate = useNavigate();
-  const { handleSubmit, handleChange, handleBlur, values, errors, touched } =
-    useFormik({
-      initialValues: {
-        title: "",
-        author: "",
-        ISBN: "",
-        publicationDate: "",
-        edition: "",
-        publisher: "",
-        genre: "",
-      },
-      validationSchema: formValidationSchema,
-      onSubmit: (newbook) => {
-        newBook(newbook);
-      },
-    });
-  const newBook = async (newbook) => {
-    await fetch("https://my-json-server.typicode.com/dmitrijt9/book-api-mock/books", {
-      method: "POST",
-      body: JSON.stringify(newbook),
-      headers: { "Content-Type": "application/json" },
-    });
-
-    navigate("/books");
-  };
+},
+validationSchema:formValidationSchema,
+onSubmit:(newbook)=>{
+  AddBook(newbook)
+}})
+const AddBook=async(newbook)=>{
+  await fetch("https://63fc0e146deb8bdb814d8ed9.mockapi.io/book",{
+    method:"POST",
+    body:JSON.stringify(newbook),
+  headers:{"Content-Type": "application/json",},
+  })
+  navigate("/books")
+    }
+  
   return (
-    <div>
-      <form className="book-submit" onSubmit={handleSubmit}>
-        <h3>Add Available Books Only!!!</h3>
-        <TextField
-          name="title"
-          onChange={handleChange}
-          onBlur={handleBlur}
-          value={values.title}
-          label="Name"
-          variant="outlined"
-          error={touched.title && errors.title}
-          helperText={touched.title && errors.title ? errors.title : null}
-        />
-
-        <TextField
-          name="author"
-          onChange={handleChange}
-          onBlur={handleBlur}
-          value={values.author}
-          label="Author"
-          variant="outlined"
-          error={touched.author && errors.author}
-          helperText={touched.author && errors.author ? errors.author : null}
-        />
-        <TextField
-          name="ISBN"
-          onChange={handleChange}
-          onBlur={handleBlur}
-          value={values.ISBN}
-          label="ISBN"
-          variant="outlined"
-          error={touched.ISBN && errors.ISBN}
-          helperText={touched.ISBN && errors.ISBN ? errors.ISBN : null}
-        />
-        <TextField
-          name="publicationDate"
-          onChange={handleChange}
-          onBlur={handleBlur}
-          value={values.publicationDate}
-          label="Publication Date"
-          variant="outlined"
-          error={touched.publicationDate && errors.publicationDate}
-          helperText={
-            touched.publicationDate && errors.publicationDate
-              ? errors.publicationDate
-              : null
-          }
-        />
-        <TextField
-          name="edition"
-          onChange={handleChange}
-          onBlur={handleBlur}
-          value={values.edition}
-          label="Edition"
-          variant="outlined"
-          error={touched.edition && errors.edition}
-          helperText={touched.edition && errors.edition ? errors.edition : null}
-        />
-        <TextField
-          name="publisher"
-          onChange={handleChange}
-          onBlur={handleBlur}
-          value={values.publisher}
-          label="Publisher"
-          variant="outlined"
-          error={touched.publisher && errors.publisher}
-          helperText={
-            touched.publisher && errors.publisher ? errors.publisher : null
-          }
-        />
-        <TextField
-          name="genre"
-          onChange={handleChange}
-          onBlur={handleBlur}
-          value={values.genre}
-          label="Genre"
-          variant="outlined"
-          error={touched.genre && errors.genre}
-          helperText={touched.genre && errors.genre ? errors.genre : null}
-        />
-        <Button variant="contained" type="submit">
-          Add Book
-        </Button>
-      </form>
-    </div>
+    <form onSubmit={handleSubmit} className="add">
+      <TextField
+      id="outlined-basic" 
+      label="image" 
+      variant="outlined" 
+      name="image"
+      value={values.image}
+       type="text" 
+       onChange={handleChange} 
+       onBlur={handleBlur}
+       error={touched.image && errors.image}
+      helperText={touched.image && errors.image?errors.image:null}
+       />
+       
+      <TextField
+      id="outlined-basic" 
+      label="name" 
+      variant="outlined" 
+      name="name"
+      value={values.name}
+       type="text" 
+      onChange={handleChange} 
+       onBlur={handleBlur}
+       error={touched.name && errors.name}
+      helperText=   {touched.name && errors.name ? errors.name : null}
+       />
+      
+      <TextField
+      id="outlined-basic" 
+      label="author" 
+      variant="outlined" 
+      name="author"
+      value={values.author}
+       type="text" 
+        onChange={handleChange} 
+       onBlur={handleBlur}
+       error={touched.author && errors.author}
+       helperText= {touched.author && errors.author ? errors.author : null}
+       />
+        
+      <TextField
+      id="outlined-basic" 
+      label="rate" 
+      variant="outlined" 
+      name="rate"
+      value={values.rate}
+      onChange={handleChange} 
+      onBlur={handleBlur}
+      error={touched.rate && errors.rate}
+      helperText=  {touched.rate && errors.rate ? errors.rate : null}
+      />
+      
+      <TextField
+      id="outlined-basic" 
+      label="rating" 
+      variant="outlined" 
+      name="rating"
+      value={values.rating}
+       type="text" 
+      onChange={handleChange} 
+       onBlur={handleBlur}
+       error={touched.rating && errors.rating}
+      helperText={touched.rating && errors.rating ? errors.rating : null}
+       />
+         
+      <TextField
+      id="outlined-basic" 
+      label="discription" 
+      variant="outlined" 
+      name="discription"
+      value={values.discription}
+       type="text" 
+       
+       onChange={handleChange} 
+       onBlur={handleBlur}
+       error={touched.discription && errors.discription }
+       helperText=    {touched.discription && errors.discription ? errors.discription : null}
+       />
+     
+      <TextField
+      id="outlined-basic" 
+      label="available" 
+      variant="outlined" 
+      name="available"
+      value={values.available}
+       type="text" 
+             onChange={handleChange} 
+       onBlur={handleBlur}
+       error={touched.available && errors.available}
+      helperText={touched.available && errors.available ? errors.available : null}
+      />
+      
+      <Button variant="contained" color="primary" type="submit">Add Book</Button>
+    </form>
   );
-};
+}
